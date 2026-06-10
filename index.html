@@ -157,15 +157,15 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding
   <div class="container">
     <div class="stats-grid">
       <div>
-        <div class="stat-num">+50</div>
+        <div class="stat-num" data-count="50" data-prefix="+" data-suffix="">0</div>
         <div class="stat-label">شركة تستخدم منتجاتنا</div>
       </div>
       <div>
-        <div class="stat-num">3</div>
+        <div class="stat-num" data-count="3" data-prefix="" data-suffix="">0</div>
         <div class="stat-label">منتجات تقنية</div>
       </div>
       <div>
-        <div class="stat-num">99.9%</div>
+        <div class="stat-num" data-count="99.9" data-prefix="" data-suffix="%" data-decimals="1">0</div>
         <div class="stat-label">نسبة التشغيل</div>
       </div>
     </div>
@@ -325,6 +325,38 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding
     entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
   },{threshold:0.12});
   els.forEach(function(e){obs.observe(e)});
+})();
+// Counter animation
+(function(){
+  function animateCount(el){
+    var target   = parseFloat(el.dataset.count);
+    var prefix   = el.dataset.prefix  || '';
+    var suffix   = el.dataset.suffix  || '';
+    var decimals = parseInt(el.dataset.decimals) || 0;
+    var duration = 1800;
+    var start    = null;
+    function ease(t){return t<.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1}
+    function step(ts){
+      if(!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var value    = target * ease(progress);
+      el.textContent = prefix + value.toFixed(decimals) + suffix;
+      if(progress < 1) requestAnimationFrame(step);
+      else el.textContent = prefix + target.toFixed(decimals) + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll('[data-count]');
+  var triggered = false;
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting && !triggered){
+        triggered = true;
+        counters.forEach(function(el){ animateCount(el); });
+      }
+    });
+  },{threshold:0.5});
+  if(counters.length) obs.observe(counters[0].closest('.stats') || counters[0]);
 })();
 document.querySelectorAll('a[href^="#"]').forEach(function(a){
   a.addEventListener('click',function(e){
