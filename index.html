@@ -154,6 +154,13 @@ body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);overf
 
 /* Footer */
 footer{background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:48px 0;text-align:center}
+.social-links{display:flex;justify-content:center;gap:18px;margin:18px 0 14px;font-size:22px}
+.social-links a{color:#cbd5e1;opacity:.85;transition:opacity .15s,color .15s}
+.social-links a:hover{color:#fff;opacity:1}
+.wa-fab{position:fixed;bottom:22px;left:22px;z-index:1080;display:inline-flex;align-items:center;gap:10px;padding:12px 20px 12px 14px;background:#25D366;color:#fff!important;border-radius:999px;text-decoration:none!important;font-weight:700;font-size:15px;box-shadow:0 8px 24px rgba(37,211,102,.45);transition:transform .15s ease,box-shadow .15s ease;direction:rtl}
+.wa-fab:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(37,211,102,.55)}
+.wa-fab .wa-ico{width:34px;height:34px;border-radius:50%;background:#fff;color:#25D366;display:inline-flex;align-items:center;justify-content:center;font-size:20px}
+@media (max-width:575px){.wa-fab{bottom:16px;left:16px;padding:10px 16px 10px 12px;font-size:14px}}
 .foot-links a{color:rgba(255,255,255,.5);text-decoration:none;font-size:.85rem;margin:0 10px;transition:color .2s}
 .foot-links a:hover{color:#fff}
 .foot-copy{color:rgba(255,255,255,.3);font-size:.82rem;margin-top:16px}
@@ -357,9 +364,37 @@ footer{background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding
       <a href="#products">منتجاتنا</a>
       <a href="#why">لماذا نحن؟</a>
     </div>
+    <!-- Social profiles: fill the hrefs; an icon with href="#" stays hidden. -->
+    <div class="social-links" id="socialLinks">
+      <a href="https://wa.me/message/7IBAA3IY3NEGC1" data-wa="1" target="_blank" rel="noopener" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+      <a href="#" target="_blank" rel="noopener" title="Facebook"><i class="bi bi-facebook"></i></a>
+      <a href="#" target="_blank" rel="noopener" title="Instagram"><i class="bi bi-instagram"></i></a>
+      <a href="#" target="_blank" rel="noopener" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+      <a href="#" target="_blank" rel="noopener" title="TikTok"><i class="bi bi-tiktok"></i></a>
+    </div>
     <div class="foot-copy">&copy; 2025 Pal Systems. جميع الحقوق محفوظة.</div>
   </div>
 </footer>
+
+<!-- Floating WhatsApp: set WA_NUMBER (international digits) to open the chat
+     with a message naming this site and page; empty = the business short link. -->
+<a id="waFab" class="wa-fab" href="https://wa.me/message/7IBAA3IY3NEGC1" target="_blank" rel="noopener" aria-label="تواصل معنا عبر واتساب">
+  <span class="wa-ico"><i class="bi bi-whatsapp"></i></span><span>تواصل معنا</span>
+</a>
+<script>
+(function () {
+  var WA_NUMBER = '';                                  // e.g. '970599000000'
+  var SHORT     = 'https://wa.me/message/7IBAA3IY3NEGC1';
+  var page      = (document.title || 'الرئيسية').split('|')[0].trim();
+  var text      = 'مرحباً، أتواصل معكم من موقع Pal Systems — صفحة: ' + page;
+  var url       = WA_NUMBER ? 'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(text) : SHORT;
+  document.getElementById('waFab').href = url;
+  document.querySelectorAll('#socialLinks a').forEach(function (a) {
+    if (a.dataset.wa) { a.href = url; return; }
+    if (a.getAttribute('href') === '#') a.style.display = 'none';
+  });
+})();
+</script>
 
 <script>
 (function(){
